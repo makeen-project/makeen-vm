@@ -10,7 +10,7 @@ export const azureOptionsSchema = {
 };
 
 const instanceSchema = {
-  id: Joi.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/ASE_RG/providers/Microsoft.Compute/virtualMachines/azure-ubuntu'),
+  id: Joi.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/group/providers/Microsoft.Compute/virtualMachines/azure-ubuntu'),
   name: Joi.string().example('azure-ubuntu'),
   type: Joi.string().example('Microsoft.Compute/virtualMachines'),
   location: Joi.string().example('australiaeast'),
@@ -28,7 +28,7 @@ const instanceSchema = {
       osType: Joi.string().example('Windows'),
       name: Joi.string().example('NPS-Win-2012'),
       vhd: Joi.object({
-        uri: Joi.string().example('https://asergdisks293.blob.core.windows.net/vhds/NPS-Win-201220170324152017.vhd'),
+        uri: Joi.string().example('https://2342342.blob.core.windows.net/vhds/NPS-Win-201220170324152017.vhd'),
       }),
       caching: Joi.string().example('ReadWrite'),
       createOption: Joi.string().example('FromImage'),
@@ -37,7 +37,7 @@ const instanceSchema = {
   }),
   osProfile: Joi.object().keys({
     computerName: Joi.string().example('azure-ubuntu'),
-    adminUsername: Joi.string().example('aseadmin'),
+    adminUsername: Joi.string().example('admin'),
     linuxConfiguration: Joi.object(),
     windowsConfiguration: Joi.object(),
     secrets: Joi.array(),
@@ -45,7 +45,7 @@ const instanceSchema = {
   networkProfile: Joi.object().keys({
     networkInterfaces: Joi.array().items(
       Joi.object({
-        id: Joi.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/ASE_RG/providers/Microsoft.Network/networkInterfaces/nps-win-2012448'),
+        id: Joi.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/RG/providers/Microsoft.Network/networkInterfaces/nps-win-2012448'),
       }),
     ),
   }),

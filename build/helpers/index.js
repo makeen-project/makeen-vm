@@ -36,7 +36,7 @@ const loadPluginOptions = exports.loadPluginOptions = () => {
   const registrations = _loadManifest.registrations;
 
 
-  const asePlugin = registrations.find(({ plugin: { register } }) => register === './ase');
+  const makeenVm = registrations.find(({ plugin: { register } }) => register === './makeen-vm');
 
-  return asePlugin.plugin.options;
+  return makeenVm.plugin.options;
 };

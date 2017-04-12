@@ -9,8 +9,8 @@ export class CloudRoutes extends Router {
   es2Client = null;
   constructor(awsCredentials, azureCredentials) {
     super({
-      namespace: 'ASE',
-      basePath: '/ase',
+      namespace: 'MakeenVM',
+      basePath: '/vm',
     });
 
     this.ec2Client = new EC2Client(awsCredentials);

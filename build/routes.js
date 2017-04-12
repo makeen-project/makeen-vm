@@ -157,8 +157,8 @@ let CloudRoutes = exports.CloudRoutes = (_dec = _makeenRouter.route.get({
 }), (_class = class CloudRoutes extends _makeenRouter.Router {
   constructor(awsCredentials, azureCredentials) {
     super({
-      namespace: 'ASE',
-      basePath: '/ase'
+      namespace: 'MakeenVM',
+      basePath: '/vm'
     });
 
     this.es2Client = null;

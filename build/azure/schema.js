@@ -21,7 +21,7 @@ const azureOptionsSchema = exports.azureOptionsSchema = {
 };
 
 const instanceSchema = {
-  id: _joi2.default.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/ASE_RG/providers/Microsoft.Compute/virtualMachines/azure-ubuntu'),
+  id: _joi2.default.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/group/providers/Microsoft.Compute/virtualMachines/azure-ubuntu'),
   name: _joi2.default.string().example('azure-ubuntu'),
   type: _joi2.default.string().example('Microsoft.Compute/virtualMachines'),
   location: _joi2.default.string().example('australiaeast'),
@@ -39,7 +39,7 @@ const instanceSchema = {
       osType: _joi2.default.string().example('Windows'),
       name: _joi2.default.string().example('NPS-Win-2012'),
       vhd: _joi2.default.object({
-        uri: _joi2.default.string().example('https://asergdisks293.blob.core.windows.net/vhds/NPS-Win-201220170324152017.vhd')
+        uri: _joi2.default.string().example('https://2342342.blob.core.windows.net/vhds/NPS-Win-201220170324152017.vhd')
       }),
       caching: _joi2.default.string().example('ReadWrite'),
       createOption: _joi2.default.string().example('FromImage')
@@ -48,14 +48,14 @@ const instanceSchema = {
   }),
   osProfile: _joi2.default.object().keys({
     computerName: _joi2.default.string().example('azure-ubuntu'),
-    adminUsername: _joi2.default.string().example('aseadmin'),
+    adminUsername: _joi2.default.string().example('admin'),
     linuxConfiguration: _joi2.default.object(),
     windowsConfiguration: _joi2.default.object(),
     secrets: _joi2.default.array()
   }),
   networkProfile: _joi2.default.object().keys({
     networkInterfaces: _joi2.default.array().items(_joi2.default.object({
-      id: _joi2.default.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/ASE_RG/providers/Microsoft.Network/networkInterfaces/nps-win-2012448')
+      id: _joi2.default.string().example('/subscriptions/0e9d4d28-a996-4873-a0e5-edc324ce5800/resourceGroups/RG/providers/Microsoft.Network/networkInterfaces/nps-win-2012448')
     }))
   }),
   provisioningState: _joi2.default.string().example('Succeeded'),
