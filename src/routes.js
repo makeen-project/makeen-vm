@@ -2,11 +2,15 @@ import AwsRoutes from './aws/routes';
 import AzureRoutes from './azure/routes';
 
 export default (server, { awsCredentials, azureCredentials }) => {
-  const awsRoutes = new AwsRoutes(awsCredentials);
-  const azureRoutes = new AzureRoutes(azureCredentials);
+  if (awsCredentials) {
+    const awsRoutes = new AwsRoutes(awsCredentials);
+    awsRoutes.mount(server);
+  }
 
-  awsRoutes.mount(server);
-  azureRoutes.mount(server);
+  if (azureCredentials) {
+    const azureRoutes = new AzureRoutes(azureCredentials);
+    azureRoutes.mount(server);
+  }
 };
 
 
