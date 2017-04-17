@@ -54,14 +54,12 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
-let auth = false;
-
 let AzureRoutes = (_dec = _makeenRouter.route.get({
   method: 'GET',
   path: '/list',
   config: {
     description: 'Azure list endopoint',
-    auth,
+    auth: false,
     plugins: {
       'hapi-swagger': {
         responseMessages: azureSchemas.listInstancesResponse
@@ -73,7 +71,7 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
   path: '/stop',
   config: {
     description: 'Azure stop instances endopoint',
-    auth,
+    auth: false,
     validate: {
       query: {
         instanceIds: _joi2.default.array().items(_joi2.default.string())
@@ -90,7 +88,7 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
   path: '/start',
   config: {
     description: 'Azure start instances endopoint',
-    auth,
+    auth: false,
     validate: {
       query: {
         instanceIds: _joi2.default.array().items(_joi2.default.string())
@@ -104,16 +102,21 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
   }
 }), (_class = class AzureRoutes extends _makeenRouter.Router {
 
-  constructor(azureCredentials, auth) {
+  constructor(azureCredentials, authOption) {
     super({
       namespace: 'MakeenVM.Azure',
       basePath: '/vm/azure'
     });
 
     this.es2Client = null;
-    this.auth = auth;
     this.azureClient = new _index2.default();
     this.azureClient.init(azureCredentials);
+
+    Object.keys(this.routes).forEach(route => {
+      const config = this.routes[route].config;
+
+      config.auth = authOption;
+    });
   }
 
   listAzureInstances() {
