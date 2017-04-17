@@ -3,8 +3,6 @@ import { Router, route } from 'makeen-router';
 import EC2Client from './index';
 import * as awsSchemas from './schema';
 
-let auth = false;
-
 export default class AwsRoutes extends Router {
   es2Client = null;
   constructor(awsCredentials, authOption) {
@@ -14,7 +12,13 @@ export default class AwsRoutes extends Router {
     });
 
     this.ec2Client = new EC2Client(awsCredentials);
-    auth = authOption;
+
+    Object
+      .keys(this.routes)
+      .forEach((route) => {
+        const { config } = this.routes[route];
+        config.auth = authOption;
+      });
   }
 
   @route.get({
@@ -22,7 +26,7 @@ export default class AwsRoutes extends Router {
     path: '/list',
     config: {
       description: 'AWS endopoint',
-      auth,
+      auth: false,
       plugins: {
         'hapi-swagger': {
           responseMessages: awsSchemas.listInstancesResponse,
@@ -39,7 +43,7 @@ export default class AwsRoutes extends Router {
     path: '/stop',
     config: {
       description: 'AWS stop instances endopoint',
-      auth,
+      auth: false,
       validate: {
         query: {
           instanceIds: Joi.array().items(
@@ -65,7 +69,7 @@ export default class AwsRoutes extends Router {
     path: '/start',
     config: {
       description: 'AWS start instances endopoint',
-      auth,
+      auth: false,
       validate: {
         query: {
           instanceIds: Joi.array().items(

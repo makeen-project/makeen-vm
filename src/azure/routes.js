@@ -3,20 +3,24 @@ import { Router, route } from 'makeen-router';
 import AzureClient from './index';
 import * as azureSchemas from './schema';
 
-let auth = false;
-
 export default class AzureRoutes extends Router {
   es2Client = null;
 
-  constructor(azureCredentials, auth) {
+  constructor(azureCredentials, authOption) {
     super({
       namespace: 'MakeenVM.Azure',
       basePath: '/vm/azure',
     });
 
-    this.auth = auth;
     this.azureClient = new AzureClient();
     this.azureClient.init(azureCredentials);
+
+    Object
+      .keys(this.routes)
+      .forEach((route) => {
+        const { config } = this.routes[route];
+        config.auth = authOption;
+      });
   }
 
   @route.get({
@@ -24,7 +28,7 @@ export default class AzureRoutes extends Router {
     path: '/list',
     config: {
       description: 'Azure list endopoint',
-      auth,
+      auth: false,
       plugins: {
         'hapi-swagger': {
           responseMessages: azureSchemas.listInstancesResponse,
@@ -41,7 +45,7 @@ export default class AzureRoutes extends Router {
     path: '/stop',
     config: {
       description: 'Azure stop instances endopoint',
-      auth,
+      auth: false,
       validate: {
         query: {
           instanceIds: Joi.array().items(
@@ -67,7 +71,7 @@ export default class AzureRoutes extends Router {
     path: '/start',
     config: {
       description: 'Azure start instances endopoint',
-      auth,
+      auth: false,
       validate: {
         query: {
           instanceIds: Joi.array().items(
