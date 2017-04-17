@@ -5,7 +5,7 @@ import * as azureSchemas from './schema';
 
 export default class AzureRoutes extends Router {
   es2Client = null;
-  constructor(azureCredentials) {
+  constructor(azureCredentials, auth) {
     super({
       namespace: 'MakeenVM.Azure',
       basePath: '/vm/azure',
@@ -20,7 +20,7 @@ export default class AzureRoutes extends Router {
     path: '/list',
     config: {
       description: 'Azure list endopoint',
-      auth: false,
+      auth,
       plugins: {
         'hapi-swagger': {
           responseMessages: azureSchemas.listInstancesResponse,
@@ -37,7 +37,7 @@ export default class AzureRoutes extends Router {
     path: '/stop',
     config: {
       description: 'Azure stop instances endopoint',
-      auth: false,
+      auth,
       validate: {
         query: {
           instanceIds: Joi.array().items(
@@ -63,7 +63,7 @@ export default class AzureRoutes extends Router {
     path: '/start',
     config: {
       description: 'Azure start instances endopoint',
-      auth: false,
+      auth,
       validate: {
         query: {
           instanceIds: Joi.array().items(

@@ -5,7 +5,7 @@ import * as awsSchemas from './schema';
 
 export default class AwsRoutes extends Router {
   es2Client = null;
-  constructor(awsCredentials) {
+  constructor(awsCredentials, auth) {
     super({
       namespace: 'MakeenVM.AWS',
       basePath: '/vm/aws',
@@ -19,7 +19,7 @@ export default class AwsRoutes extends Router {
     path: '/list',
     config: {
       description: 'AWS endopoint',
-      auth: false,
+      auth,
       plugins: {
         'hapi-swagger': {
           responseMessages: awsSchemas.listInstancesResponse,
@@ -36,7 +36,7 @@ export default class AwsRoutes extends Router {
     path: '/stop',
     config: {
       description: 'AWS stop instances endopoint',
-      auth: false,
+      auth,
       validate: {
         query: {
           instanceIds: Joi.array().items(
@@ -62,7 +62,7 @@ export default class AwsRoutes extends Router {
     path: '/start',
     config: {
       description: 'AWS start instances endopoint',
-      auth: false,
+      auth,
       validate: {
         query: {
           instanceIds: Joi.array().items(
