@@ -3,15 +3,18 @@ import { Router, route } from 'makeen-router';
 import EC2Client from './index';
 import * as awsSchemas from './schema';
 
+let auth = false;
+
 export default class AwsRoutes extends Router {
   es2Client = null;
-  constructor(awsCredentials, auth) {
+  constructor(awsCredentials, authOption) {
     super({
       namespace: 'MakeenVM.AWS',
       basePath: '/vm/aws',
     });
 
     this.ec2Client = new EC2Client(awsCredentials);
+    auth = authOption;
   }
 
   @route.get({

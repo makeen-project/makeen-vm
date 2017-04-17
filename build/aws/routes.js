@@ -54,12 +54,14 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
+let auth = false;
+
 let AwsRoutes = (_dec = _makeenRouter.route.get({
   method: 'GET',
   path: '/list',
   config: {
     description: 'AWS endopoint',
-    auth: false,
+    auth,
     plugins: {
       'hapi-swagger': {
         responseMessages: awsSchemas.listInstancesResponse
@@ -71,7 +73,7 @@ let AwsRoutes = (_dec = _makeenRouter.route.get({
   path: '/stop',
   config: {
     description: 'AWS stop instances endopoint',
-    auth: false,
+    auth,
     validate: {
       query: {
         instanceIds: _joi2.default.array().items(_joi2.default.string())
@@ -88,7 +90,7 @@ let AwsRoutes = (_dec = _makeenRouter.route.get({
   path: '/start',
   config: {
     description: 'AWS start instances endopoint',
-    auth: false,
+    auth,
     validate: {
       query: {
         instanceIds: _joi2.default.array().items(_joi2.default.string())
@@ -101,7 +103,7 @@ let AwsRoutes = (_dec = _makeenRouter.route.get({
     }
   }
 }), (_class = class AwsRoutes extends _makeenRouter.Router {
-  constructor(awsCredentials) {
+  constructor(awsCredentials, authOption) {
     super({
       namespace: 'MakeenVM.AWS',
       basePath: '/vm/aws'
@@ -109,6 +111,7 @@ let AwsRoutes = (_dec = _makeenRouter.route.get({
 
     this.es2Client = null;
     this.ec2Client = new _index2.default(awsCredentials);
+    auth = authOption;
   }
 
   listAwsInstances() {

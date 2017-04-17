@@ -51,6 +51,12 @@ const instanceSchema = {
   }),
   provisioningState: Joi.string().example('Succeeded'),
   vmId: Joi.string().example('225e1110-b047-45e7-b390-a497a25c4b2d'),
+  diagnosticsProfile: Joi.object({
+    bootDiagnostics: Joi.object({
+        enabled: Joi.bool(),
+        storageUri: Joi.string().example("https://domain.blob.core.windows.net/")
+      })
+    }),
   instanceView: Joi.object({
     vmAgent: Joi.object({
       vmAgentVersion: Joi.string().example('2.7.1198.797'),
@@ -86,6 +92,10 @@ const instanceSchema = {
         time: Joi.date().example('2017-03-24T04:24:11.990Z'),
       }),
     ),
+     bootDiagnostics: Joi.object({
+      consoleScreenshotBlobUri: Joi.string().example( "https://dom.blob.core.windows.net/bootdiagnostics-aseportal-23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2/ASE-Portal-Demo.23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2.screenshot.bmp"),
+      serialConsoleLogBlobUri: Joi.string().example("https://dom.blob.core.windows.net/bootdiagnostics-aseportal-23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2/ASE-Portal-Demo.23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2.serialconsole.log"),
+    }),
   }),
 };
 

@@ -60,6 +60,12 @@ const instanceSchema = {
   }),
   provisioningState: _joi2.default.string().example('Succeeded'),
   vmId: _joi2.default.string().example('225e1110-b047-45e7-b390-a497a25c4b2d'),
+  diagnosticsProfile: _joi2.default.object({
+    bootDiagnostics: _joi2.default.object({
+      enabled: _joi2.default.bool(),
+      storageUri: _joi2.default.string().example("https://domain.blob.core.windows.net/")
+    })
+  }),
   instanceView: _joi2.default.object({
     vmAgent: _joi2.default.object({
       vmAgentVersion: _joi2.default.string().example('2.7.1198.797'),
@@ -86,7 +92,11 @@ const instanceSchema = {
       level: _joi2.default.string().example('Info'),
       displayStatus: _joi2.default.string().example('Provisioning succeeded'),
       time: _joi2.default.date().example('2017-03-24T04:24:11.990Z')
-    }))
+    })),
+    bootDiagnostics: _joi2.default.object({
+      consoleScreenshotBlobUri: _joi2.default.string().example("https://dom.blob.core.windows.net/bootdiagnostics-aseportal-23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2/ASE-Portal-Demo.23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2.screenshot.bmp"),
+      serialConsoleLogBlobUri: _joi2.default.string().example("https://dom.blob.core.windows.net/bootdiagnostics-aseportal-23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2/ASE-Portal-Demo.23395d4f-8f19-4dfa-9acb-f3e2e5d1f9f2.serialconsole.log")
+    })
   })
 };
 

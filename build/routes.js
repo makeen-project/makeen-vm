@@ -14,10 +14,14 @@ var _routes4 = _interopRequireDefault(_routes3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = (server, { awsCredentials, azureCredentials }) => {
-  const awsRoutes = new _routes2.default(awsCredentials);
-  const azureRoutes = new _routes4.default(azureCredentials);
+exports.default = (server, { awsCredentials, azureCredentials, auth }) => {
+  if (awsCredentials) {
+    const awsRoutes = new _routes2.default(awsCredentials, auth || false);
+    awsRoutes.mount(server);
+  }
 
-  awsRoutes.mount(server);
-  azureRoutes.mount(server);
+  if (azureCredentials) {
+    const azureRoutes = new _routes4.default(azureCredentials, auth || false);
+    azureRoutes.mount(server);
+  }
 };

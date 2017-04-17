@@ -3,14 +3,18 @@ import { Router, route } from 'makeen-router';
 import AzureClient from './index';
 import * as azureSchemas from './schema';
 
+let auth = false;
+
 export default class AzureRoutes extends Router {
   es2Client = null;
+
   constructor(azureCredentials, auth) {
     super({
       namespace: 'MakeenVM.Azure',
       basePath: '/vm/azure',
     });
 
+    this.auth = auth;
     this.azureClient = new AzureClient();
     this.azureClient.init(azureCredentials);
   }

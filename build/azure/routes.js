@@ -54,12 +54,14 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
+let auth = false;
+
 let AzureRoutes = (_dec = _makeenRouter.route.get({
   method: 'GET',
   path: '/list',
   config: {
     description: 'Azure list endopoint',
-    auth: false,
+    auth,
     plugins: {
       'hapi-swagger': {
         responseMessages: azureSchemas.listInstancesResponse
@@ -71,7 +73,7 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
   path: '/stop',
   config: {
     description: 'Azure stop instances endopoint',
-    auth: false,
+    auth,
     validate: {
       query: {
         instanceIds: _joi2.default.array().items(_joi2.default.string())
@@ -88,7 +90,7 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
   path: '/start',
   config: {
     description: 'Azure start instances endopoint',
-    auth: false,
+    auth,
     validate: {
       query: {
         instanceIds: _joi2.default.array().items(_joi2.default.string())
@@ -101,13 +103,15 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
     }
   }
 }), (_class = class AzureRoutes extends _makeenRouter.Router {
-  constructor(azureCredentials) {
+
+  constructor(azureCredentials, auth) {
     super({
       namespace: 'MakeenVM.Azure',
       basePath: '/vm/azure'
     });
 
     this.es2Client = null;
+    this.auth = auth;
     this.azureClient = new _index2.default();
     this.azureClient.init(azureCredentials);
   }
