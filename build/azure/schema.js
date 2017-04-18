@@ -42,7 +42,8 @@ const instanceSchema = {
         uri: _joi2.default.string().example('https://2342342.blob.core.windows.net/vhds/NPS-Win-201220170324152017.vhd')
       }),
       caching: _joi2.default.string().example('ReadWrite'),
-      createOption: _joi2.default.string().example('FromImage')
+      createOption: _joi2.default.string().example('FromImage'),
+      diskSizeGB: _joi2.default.number().example(31)
     }),
     dataDisks: _joi2.default.array()
   }),
