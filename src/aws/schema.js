@@ -16,7 +16,7 @@ const instanceSchema = Joi.object().keys({
   State: Joi.object().keys({
     Code: Joi.number().example(80),
     Name: Joi.string().example('stopped'),
-  }),
+  }).unknown(),
   PrivateDnsName: Joi.string(),
   PublicDnsName: Joi.string().allow(''),
   StateTransitionReason: Joi.string().allow(''),
@@ -29,14 +29,14 @@ const instanceSchema = Joi.object().keys({
     AvailabilityZone: Joi.string(),
     GroupName: Joi.string().allow(''),
     Tenancy: Joi.string(),
-  }),
+  }).unknown(),
   StateReason: Joi.object().keys({
     Code: Joi.string().example('Client.UserInitiatedShutdown'),
     Message: Joi.string().example('Client.UserInitiatedShutdown: User initiated shutdown'),
-  }),
+  }).unknown(),
   Monitoring: Joi.object().keys({
     State: Joi.string(),
-  }),
+  }).unknown(),
   SubnetId: Joi.string(),
   VpcId: Joi.string(),
   PrivateIpAddress: Joi.string(),
@@ -53,16 +53,16 @@ const instanceSchema = Joi.object().keys({
         AttachTime: Joi.date(),
         DeleteOnTermination: Joi.bool(),
       }),
-    }),
+    }).unknown(),
   ),
   VirtualizationType: Joi.string(),
   ClientToken: Joi.string(),
-  Tags: Joi.array().items(Joi.string()),
+  Tags: Joi.array(),
   SecurityGroups: Joi.array().items(
     Joi.object().keys({
       GroupName: Joi.string().allow(''),
       GroupId: Joi.string(),
-    }),
+    }).unknown(),
   ),
   SourceDestCheck: Joi.bool(),
   Hypervisor: Joi.string(),
@@ -83,7 +83,7 @@ const instanceSchema = Joi.object().keys({
         Joi.object().keys({
           GroupName: Joi.string().allow(''),
           GroupId: Joi.string(),
-        }),
+        }).unknown(),
       ),
       Attachment: Joi.object().keys({
         AttachmentId: Joi.string(),
@@ -91,29 +91,29 @@ const instanceSchema = Joi.object().keys({
         Status: Joi.string(),
         AttachTime: Joi.date(),
         DeleteOnTermination: Joi.bool(),
-      }),
+      }).unknown(),
       Association: Joi.object().keys({
         PublicIp: Joi.string(),
         PublicDnsName: Joi.string().allow(''),
         IpOwnerId: Joi.string(),
-      }),
+      }).unknown(),
       PrivateIpAddresses: Joi.array().items(
         Joi.object().keys({
           PrivateIpAddress: Joi.string(),
           PrivateDnsName: Joi.string(),
           Primary: Joi.bool(),
-          Association: {
+          Association: Joi.object({
             PublicIp: Joi.string(),
             PublicDnsName: Joi.string().allow(''),
             IpOwnerId: Joi.string(),
-          },
-        }),
+          }).unknown(),
+        }).unknown(),
       ),
       Ipv6Addresses: Joi.array(),
-    }),
+    }).unknown(),
   ),
   EnaSupport: Joi.bool(),
-});
+}).unknown();
 
 export const listInstancesResponse = Joi.object().keys({
   Reservations: Joi.array().items(
@@ -123,7 +123,7 @@ export const listInstancesResponse = Joi.object().keys({
       Groups: Joi.array(),
       Instances: Joi.array().items(instanceSchema),
       EbsOptimized: Joi.bool(),
-    }),
+    }).unknown(),
   ),
 });
 

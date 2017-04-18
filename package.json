@@ -1,6 +1,6 @@
 {
   "name": "makeen-vm",
-  "version": "1.0.15",
+  "version": "0.0.15",
   "description": "",
   "main": "./build/index.js",
   "scripts": {
