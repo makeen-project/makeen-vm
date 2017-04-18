@@ -32,6 +32,7 @@ const instanceSchema = {
       }),
       caching: Joi.string().example('ReadWrite'),
       createOption: Joi.string().example('FromImage'),
+      diskSizeGB: Joi.number().example(31),
     }),
     dataDisks: Joi.array(),
   }),
