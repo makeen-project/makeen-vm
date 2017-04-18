@@ -49,7 +49,7 @@ export default class AzureRoutes extends Router {
       validate: {
         query: {
           instanceIds: Joi.array().items(
-            Joi.string(),
+            Joi.string().required(),
           ),
         },
       },
@@ -75,7 +75,7 @@ export default class AzureRoutes extends Router {
       validate: {
         query: {
           instanceIds: Joi.array().items(
-            Joi.string(),
+            Joi.string().required(),
           ),
         },
       },
