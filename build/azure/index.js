@@ -149,6 +149,10 @@ let AzureClient = class AzureClient {
               vmName = _extractGroupAndName.vmName;
 
 
+        if (!resourceGroupName || !vmName) {
+          throw new Error(`invalid instance id provided ${id}`);
+        }
+
         return new _bluebird2.default(function (resolve, reject) {
           _this4.computeClient.virtualMachines.powerOff(resourceGroupName, vmName, function (err, _result) {
             if (err) {

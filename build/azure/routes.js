@@ -13,6 +13,10 @@ var _joi2 = _interopRequireDefault(_joi);
 
 var _makeenRouter = require('makeen-router');
 
+var _boom = require('boom');
+
+var _boom2 = _interopRequireDefault(_boom);
+
 var _index = require('./index');
 
 var _index2 = _interopRequireDefault(_index);
@@ -74,7 +78,7 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
     auth: false,
     validate: {
       query: {
-        instanceIds: _joi2.default.array().items(_joi2.default.string())
+        instanceIds: _joi2.default.array().items(_joi2.default.string()).min(1).unique().required()
       }
     },
     plugins: {
@@ -91,7 +95,7 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
     auth: false,
     validate: {
       query: {
-        instanceIds: _joi2.default.array().items(_joi2.default.string())
+        instanceIds: _joi2.default.array().items(_joi2.default.string()).min(1).unique().required()
       }
     },
     plugins: {
@@ -120,21 +124,33 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
   }
 
   listAzureInstances() {
-    return this.azureClient.listInstances();
+    try {
+      return this.azureClient.listInstances();
+    } catch (e) {
+      return _boom2.default.badRequest(e.Message);
+    }
   }
 
   stopAzureInstances(request) {
-    const instanceIds = request.query.instanceIds;
+    try {
+      const instanceIds = request.query.instanceIds;
 
 
-    return this.azureClient.turnInstancesOff(instanceIds);
+      return this.azureClient.turnInstancesOff(instanceIds);
+    } catch (e) {
+      return _boom2.default.badRequest(e.Message);
+    }
   }
 
   starAzureInstances(request) {
-    const instanceIds = request.query.instanceIds;
+    try {
+      const instanceIds = request.query.instanceIds;
 
 
-    return this.azureClient.turnInstancesOn(instanceIds);
+      return this.azureClient.turnInstancesOn(instanceIds);
+    } catch (e) {
+      return _boom2.default.badRequest(e.Message);
+    }
   }
 }, (_applyDecoratedDescriptor(_class.prototype, 'listAzureInstances', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'listAzureInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'stopAzureInstances', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'stopAzureInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'starAzureInstances', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'starAzureInstances'), _class.prototype)), _class));
 exports.default = AzureRoutes;

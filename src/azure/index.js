@@ -98,6 +98,10 @@ export default class AzureClient {
     const stopTasks = ids.map((id) => {
       const { resourceGroupName, vmName } = this.extractGroupAndName(id);
 
+      if (!resourceGroupName || !vmName) {
+        throw new Error(`invalid instance id provided: "${id}"`);
+      }
+
       return new Promise((resolve, reject) => {
         this.computeClient.virtualMachines.powerOff(resourceGroupName, vmName, (err, _result) => {
           if (err) {

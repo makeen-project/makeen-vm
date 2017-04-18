@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { Router, route } from 'makeen-router';
+import Boom from 'boom';
 import AzureClient from './index';
 import * as azureSchemas from './schema';
 
@@ -17,8 +18,8 @@ export default class AzureRoutes extends Router {
 
     Object
       .keys(this.routes)
-      .forEach((route) => {
-        const { config } = this.routes[route];
+      .forEach((routeName) => {
+        const { config } = this.routes[routeName];
         config.auth = authOption;
       });
   }
@@ -36,8 +37,14 @@ export default class AzureRoutes extends Router {
       },
     },
   })
-  listAzureInstances() {
-    return this.azureClient.listInstances();
+  async listAzureInstances() {
+    try {
+      const result = await this.azureClient.listInstances();
+
+      return result;
+    } catch (e) {
+      return Boom.badRequest(e.message);
+    }
   }
 
   @route.get({
@@ -49,8 +56,11 @@ export default class AzureRoutes extends Router {
       validate: {
         query: {
           instanceIds: Joi.array().items(
-            Joi.string().required(),
-          ),
+            Joi.string(),
+          )
+            .min(1)
+            .unique()
+            .required(),
         },
       },
       plugins: {
@@ -60,10 +70,15 @@ export default class AzureRoutes extends Router {
       },
     },
   })
-  stopAzureInstances(request) {
-    const { instanceIds } = request.query;
+  async stopAzureInstances(request) {
+    try {
+      const { instanceIds } = request.query;
+      const result = await this.azureClient.turnInstancesOff(instanceIds);
 
-    return this.azureClient.turnInstancesOff(instanceIds);
+      return result;
+    } catch (e) {
+      return Boom.badRequest(e.message);
+    }
   }
 
   @route.get({
@@ -75,8 +90,11 @@ export default class AzureRoutes extends Router {
       validate: {
         query: {
           instanceIds: Joi.array().items(
-            Joi.string().required(),
-          ),
+            Joi.string(),
+          )
+            .min(1)
+            .unique()
+            .required(),
         },
       },
       plugins: {
@@ -86,9 +104,14 @@ export default class AzureRoutes extends Router {
       },
     },
   })
-  starAzureInstances(request) {
-    const { instanceIds } = request.query;
+  async startAzureInstances(request) {
+    try {
+      const { instanceIds } = request.query;
+      const result = await this.azureClient.turnInstancesOn(instanceIds);
 
-    return this.azureClient.turnInstancesOn(instanceIds);
+      return result;
+    } catch (e) {
+      return Boom.badRequest(e.message);
+    }
   }
 }

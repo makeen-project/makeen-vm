@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { Router, route } from 'makeen-router';
+import Boom from 'boom';
 import EC2Client from './index';
 import * as awsSchemas from './schema';
 
@@ -15,8 +16,8 @@ export default class AwsRoutes extends Router {
 
     Object
       .keys(this.routes)
-      .forEach((route) => {
-        const { config } = this.routes[route];
+      .forEach((routeName) => {
+        const { config } = this.routes[routeName];
         config.auth = authOption;
       });
   }
@@ -34,8 +35,14 @@ export default class AwsRoutes extends Router {
       },
     },
   })
-  listAwsInstances() {
-    return this.ec2Client.listInstances();
+  async listAwsInstances() {
+    try {
+      const result = await this.ec2Client.listInstances();
+
+      return result;
+    } catch (e) {
+      return Boom.badRequest(e.message);
+    }
   }
 
   @route.get({
@@ -47,8 +54,11 @@ export default class AwsRoutes extends Router {
       validate: {
         query: {
           instanceIds: Joi.array().items(
-            Joi.string().required(),
-          ),
+            Joi.string(),
+          )
+            .min(1)
+            .unique()
+            .required(),
         },
       },
       plugins: {
@@ -58,10 +68,15 @@ export default class AwsRoutes extends Router {
       },
     },
   })
-  stopInstances(request) {
-    const { instanceIds } = request.query;
+  async stopInstances(request) {
+    try {
+      const { instanceIds } = request.query;
+      const result = await this.ec2Client.turnInstancesOff(instanceIds);
 
-    return this.ec2Client.turnInstancesOff(instanceIds);
+      return result;
+    } catch (e) {
+      return Boom.badRequest(e.message);
+    }
   }
 
   @route.get({
@@ -73,8 +88,11 @@ export default class AwsRoutes extends Router {
       validate: {
         query: {
           instanceIds: Joi.array().items(
-            Joi.string().required(),
-          ),
+            Joi.string(),
+          )
+            .min(1)
+            .unique()
+            .required(),
         },
       },
       plugins: {
@@ -84,9 +102,14 @@ export default class AwsRoutes extends Router {
       },
     },
   })
-  startInstances(request) {
-    const { instanceIds } = request.query;
+  async startInstances(request) {
+    try {
+      const { instanceIds } = request.query;
+      const result = await this.ec2Client.turnInstancesOn(instanceIds);
 
-    return this.ec2Client.turnInstancesOn(instanceIds);
+      return result;
+    } catch (e) {
+      return Boom.badRequest(e.message);
+    }
   }
 }

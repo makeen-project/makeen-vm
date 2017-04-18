@@ -13,6 +13,10 @@ var _joi2 = _interopRequireDefault(_joi);
 
 var _makeenRouter = require('makeen-router');
 
+var _boom = require('boom');
+
+var _boom2 = _interopRequireDefault(_boom);
+
 var _index = require('./index');
 
 var _index2 = _interopRequireDefault(_index);
@@ -74,7 +78,7 @@ let AwsRoutes = (_dec = _makeenRouter.route.get({
     auth: false,
     validate: {
       query: {
-        instanceIds: _joi2.default.array().items(_joi2.default.string())
+        instanceIds: _joi2.default.array().items(_joi2.default.string()).min(1).unique().required()
       }
     },
     plugins: {
@@ -91,7 +95,7 @@ let AwsRoutes = (_dec = _makeenRouter.route.get({
     auth: false,
     validate: {
       query: {
-        instanceIds: _joi2.default.array().items(_joi2.default.string())
+        instanceIds: _joi2.default.array().items(_joi2.default.string()).min(1).unique().required()
       }
     },
     plugins: {
@@ -118,21 +122,33 @@ let AwsRoutes = (_dec = _makeenRouter.route.get({
   }
 
   listAwsInstances() {
-    return this.ec2Client.listInstances();
+    try {
+      return this.ec2Client.listInstances();
+    } catch (e) {
+      return _boom2.default.badRequest(e.Message);
+    }
   }
 
   stopInstances(request) {
-    const instanceIds = request.query.instanceIds;
+    try {
+      const instanceIds = request.query.instanceIds;
 
 
-    return this.ec2Client.turnInstancesOff(instanceIds);
+      return this.ec2Client.turnInstancesOff(instanceIds);
+    } catch (e) {
+      return _boom2.default.badRequest(e.Message);
+    }
   }
 
   startInstances(request) {
-    const instanceIds = request.query.instanceIds;
+    try {
+      const instanceIds = request.query.instanceIds;
 
 
-    return this.ec2Client.turnInstancesOn(instanceIds);
+      return this.ec2Client.turnInstancesOn(instanceIds);
+    } catch (e) {
+      return _boom2.default.badRequest(e.Message);
+    }
   }
 }, (_applyDecoratedDescriptor(_class.prototype, 'listAwsInstances', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'listAwsInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'stopInstances', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'stopInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'startInstances', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'startInstances'), _class.prototype)), _class));
 exports.default = AwsRoutes;
