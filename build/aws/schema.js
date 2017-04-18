@@ -27,7 +27,7 @@ const instanceSchema = _joi2.default.object().keys({
   State: _joi2.default.object().keys({
     Code: _joi2.default.number().example(80),
     Name: _joi2.default.string().example('stopped')
-  }),
+  }).unknown(),
   PrivateDnsName: _joi2.default.string(),
   PublicDnsName: _joi2.default.string().allow(''),
   StateTransitionReason: _joi2.default.string().allow(''),
@@ -40,14 +40,14 @@ const instanceSchema = _joi2.default.object().keys({
     AvailabilityZone: _joi2.default.string(),
     GroupName: _joi2.default.string().allow(''),
     Tenancy: _joi2.default.string()
-  }),
+  }).unknown(),
   StateReason: _joi2.default.object().keys({
     Code: _joi2.default.string().example('Client.UserInitiatedShutdown'),
     Message: _joi2.default.string().example('Client.UserInitiatedShutdown: User initiated shutdown')
-  }),
+  }).unknown(),
   Monitoring: _joi2.default.object().keys({
     State: _joi2.default.string()
-  }),
+  }).unknown(),
   SubnetId: _joi2.default.string(),
   VpcId: _joi2.default.string(),
   PrivateIpAddress: _joi2.default.string(),
@@ -63,14 +63,14 @@ const instanceSchema = _joi2.default.object().keys({
       AttachTime: _joi2.default.date(),
       DeleteOnTermination: _joi2.default.bool()
     })
-  })),
+  }).unknown()),
   VirtualizationType: _joi2.default.string(),
   ClientToken: _joi2.default.string(),
-  Tags: _joi2.default.array().items(_joi2.default.string()),
+  Tags: _joi2.default.array(),
   SecurityGroups: _joi2.default.array().items(_joi2.default.object().keys({
     GroupName: _joi2.default.string().allow(''),
     GroupId: _joi2.default.string()
-  })),
+  }).unknown()),
   SourceDestCheck: _joi2.default.bool(),
   Hypervisor: _joi2.default.string(),
   EbsOptimized: _joi2.default.bool(),
@@ -88,33 +88,33 @@ const instanceSchema = _joi2.default.object().keys({
     Groups: _joi2.default.array().items(_joi2.default.object().keys({
       GroupName: _joi2.default.string().allow(''),
       GroupId: _joi2.default.string()
-    })),
+    }).unknown()),
     Attachment: _joi2.default.object().keys({
       AttachmentId: _joi2.default.string(),
       DeviceIndex: _joi2.default.number(),
       Status: _joi2.default.string(),
       AttachTime: _joi2.default.date(),
       DeleteOnTermination: _joi2.default.bool()
-    }),
+    }).unknown(),
     Association: _joi2.default.object().keys({
       PublicIp: _joi2.default.string(),
       PublicDnsName: _joi2.default.string().allow(''),
       IpOwnerId: _joi2.default.string()
-    }),
+    }).unknown(),
     PrivateIpAddresses: _joi2.default.array().items(_joi2.default.object().keys({
       PrivateIpAddress: _joi2.default.string(),
       PrivateDnsName: _joi2.default.string(),
       Primary: _joi2.default.bool(),
-      Association: {
+      Association: _joi2.default.object({
         PublicIp: _joi2.default.string(),
         PublicDnsName: _joi2.default.string().allow(''),
         IpOwnerId: _joi2.default.string()
-      }
-    })),
+      }).unknown()
+    }).unknown()),
     Ipv6Addresses: _joi2.default.array()
-  })),
+  }).unknown()),
   EnaSupport: _joi2.default.bool()
-});
+}).unknown();
 
 const listInstancesResponse = exports.listInstancesResponse = _joi2.default.object().keys({
   Reservations: _joi2.default.array().items(_joi2.default.object().keys({
@@ -123,7 +123,7 @@ const listInstancesResponse = exports.listInstancesResponse = _joi2.default.obje
     Groups: _joi2.default.array(),
     Instances: _joi2.default.array().items(instanceSchema),
     EbsOptimized: _joi2.default.bool()
-  }))
+  }).unknown())
 });
 
 const stopInstancesResponse = exports.stopInstancesResponse = _joi2.default.object().keys({
