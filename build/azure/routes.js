@@ -29,6 +29,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
   var desc = {};
   Object['ke' + 'ys'](descriptor).forEach(function (key) {
@@ -116,41 +118,57 @@ let AzureRoutes = (_dec = _makeenRouter.route.get({
     this.azureClient = new _index2.default();
     this.azureClient.init(azureCredentials);
 
-    Object.keys(this.routes).forEach(route => {
-      const config = this.routes[route].config;
+    Object.keys(this.routes).forEach(routeName => {
+      const config = this.routes[routeName].config;
 
       config.auth = authOption;
     });
   }
 
   listAzureInstances() {
-    try {
-      return this.azureClient.listInstances();
-    } catch (e) {
-      return _boom2.default.badRequest(e.Message);
-    }
+    var _this = this;
+
+    return _asyncToGenerator(function* () {
+      try {
+        const result = yield _this.azureClient.listInstances();
+
+        return result;
+      } catch (e) {
+        return _boom2.default.badRequest(e.message);
+      }
+    })();
   }
 
   stopAzureInstances(request) {
-    try {
-      const instanceIds = request.query.instanceIds;
+    var _this2 = this;
 
+    return _asyncToGenerator(function* () {
+      try {
+        const instanceIds = request.query.instanceIds;
 
-      return this.azureClient.turnInstancesOff(instanceIds);
-    } catch (e) {
-      return _boom2.default.badRequest(e.Message);
-    }
+        const result = yield _this2.azureClient.turnInstancesOff(instanceIds);
+
+        return result;
+      } catch (e) {
+        return _boom2.default.badRequest(e.message);
+      }
+    })();
   }
 
-  starAzureInstances(request) {
-    try {
-      const instanceIds = request.query.instanceIds;
+  startAzureInstances(request) {
+    var _this3 = this;
 
+    return _asyncToGenerator(function* () {
+      try {
+        const instanceIds = request.query.instanceIds;
 
-      return this.azureClient.turnInstancesOn(instanceIds);
-    } catch (e) {
-      return _boom2.default.badRequest(e.Message);
-    }
+        const result = yield _this3.azureClient.turnInstancesOn(instanceIds);
+
+        return result;
+      } catch (e) {
+        return _boom2.default.badRequest(e.message);
+      }
+    })();
   }
-}, (_applyDecoratedDescriptor(_class.prototype, 'listAzureInstances', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'listAzureInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'stopAzureInstances', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'stopAzureInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'starAzureInstances', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'starAzureInstances'), _class.prototype)), _class));
+}, (_applyDecoratedDescriptor(_class.prototype, 'listAzureInstances', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'listAzureInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'stopAzureInstances', [_dec2], Object.getOwnPropertyDescriptor(_class.prototype, 'stopAzureInstances'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'startAzureInstances', [_dec3], Object.getOwnPropertyDescriptor(_class.prototype, 'startAzureInstances'), _class.prototype)), _class));
 exports.default = AzureRoutes;
